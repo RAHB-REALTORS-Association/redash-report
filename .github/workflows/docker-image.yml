@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: rahb-realtors-association/membership-report  # Replace with your lowercase repository name
+  IMAGE_NAME: rahb-realtors-association/redash-report  # Replace with your lowercase repository name
 
 jobs:
   build-and-push-image:
