@@ -3,16 +3,18 @@ import time
 import io
 import pandas as pd
 from openpyxl import styles
+import os
+import argparse
 from datetime import datetime
 import requests
 from send_email import send_email
 import settings
-import os
-import argparse
 
-def refresh_and_fetch_csv(query_id):
-    headers = {"Authorization": f"Key {settings.api_key}"}
-    
+headers = {
+    "Authorization": f"Key {settings.api_key}"
+}
+
+def refresh_and_fetch_csv(query_id):    
     # Construct the refresh URL and send a POST request to refresh the query
     refresh_url = f"{settings.redash_url}/api/queries/{query_id}/refresh"
     response = requests.post(refresh_url, headers=headers)
