@@ -7,7 +7,9 @@ titles = [
     "Title 2",
     "Title 3"
 ]
+
 logo_url = "https://www.example.com/logo.png"
+timestamp_format = "%Y-%m-%d"
 
 # Email settings
 sendgrid_api_key = "your_sendgrid_api_key"

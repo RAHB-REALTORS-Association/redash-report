@@ -41,7 +41,7 @@ def refresh_and_fetch_csv(query_id):
 def job():
     # Check if today is the day of the month to run the job
     if datetime.today().day == settings.day_of_month:
-        time_period = datetime.now().strftime("%B %Y")
+        time_period = datetime.now().strftime(settings.timestamp_format)
         for query_id, title in zip(settings.query_ids, settings.titles):
             data = refresh_and_fetch_csv(query_id)
             if data is not None:
