@@ -38,9 +38,9 @@ def refresh_and_fetch_csv(query_id):
     return None
 
 
-def job():
+def job(ignore_day_check=False):
     # Check if today is the day of the month to run the job
-    if datetime.today().day == settings.day_of_month:
+    if datetime.today().day == settings.day_of_month or ignore_day_check:
         time_period = datetime.now().strftime(settings.timestamp_format)
         for query_id, title in zip(settings.query_ids, settings.titles):
             data = refresh_and_fetch_csv(query_id)
@@ -91,7 +91,7 @@ def main():
     args = parser.parse_args()
     
     if args.now:
-        job()
+        job(ignore_day_check=True)
     else:
         # Schedule the job to run every day at the specified hour, 
         # but the tasks inside the job will only execute if the day of the month matches the specified day in the settings.
