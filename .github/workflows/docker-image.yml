@@ -11,7 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: rahb-realtors-association/chat2gpt
+  IMAGE_NAME: rahb-realtors-association/redash-report
 
 jobs:
   build-and-push-image:
