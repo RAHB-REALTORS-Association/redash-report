@@ -1,6 +1,7 @@
 import argparse
 import io
 from datetime import datetime, timedelta
+import os
 import time
 
 import pandas as pd
@@ -63,9 +64,19 @@ def run_report(mode='xlsx'):
             for df, title in zip(dataframes, titles):
                 report_file = create_xlsx_report(df, title, time_period)
                 send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_file)
+                try:
+                    # ... (send the email)
+                    os.remove(report_file)  # delete the file after sending the email
+                except Exception as e:
+                    print(f"Error in deleting the file: {e}")
         elif mode == 'pdf':
             report_file = create_pdf_report(dataframes, titles, output_path, settings.logo_url, start_date, end_date)
             send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_file)
+            try:
+                # ... (send the email)
+                os.remove(report_file)  # delete the file after sending the email
+            except Exception as e:
+                print(f"Error in deleting the file: {e}")
 
 
 def main():

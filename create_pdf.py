@@ -7,6 +7,8 @@ from reportlab.lib.pagesizes import letter, landscape
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, PageBreak, Paragraph, Spacer, Image
 
+import settings
+
 
 def create_pdf_report(dataframes, titles, output_path, logo_url, start_date, end_date):
     logo_file = io.BytesIO(urllib.request.urlopen(logo_url).read())
@@ -24,7 +26,7 @@ def create_pdf_report(dataframes, titles, output_path, logo_url, start_date, end
     logo = Image(logo_file, 100, 50)
 
     # Date range for the title
-    date_range = f" ({start_date.strftime('%m%d')} to {end_date.strftime('%m%d')})"
+    date_range = f" ({start_date.strftime(settings.timestamp_format)} to {end_date.strftime(settings.timestamp_format)})"
 
     # For each dataframe and corresponding title...
     for i, (df, title) in enumerate(zip(dataframes, titles)):
@@ -73,3 +75,6 @@ def create_pdf_report(dataframes, titles, output_path, logo_url, start_date, end
 
     # Build the PDF
     pdf.build(elements)
+
+    # Return the path of the created PDF
+    return output_path
