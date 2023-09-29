@@ -1,0 +1,39 @@
+name: RCN Roster
+
+on:
+  schedule:
+    - cron: '0 16 15 * *' # Runs at 16:00 UTC on the 15th of every month
+
+jobs:
+  generate-rcn-report:
+    runs-on: ubuntu-latest
+
+    env:
+      REDASH_URL: ${{ secrets.REDASH_URL }} # Base Redash URL
+      API_KEY: ${{ secrets.REDASH_API_KEY }} # RCN API key
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+      FROM_EMAIL: ${{ secrets.RCN_FROM_EMAIL }}
+      TO_EMAILS: ${{ secrets.RCN_TO_EMAILS }}
+      # Non-sensitive information can be set directly
+      QUERY_IDS: "15" # RCN Active Members
+      TITLES: "RCN Active Members"
+      LOGO_URL: "https://s1.cdn.rahb.ca/rahbca/wp-content/uploads/2018/10/RAHB-logo_hztrans_video.png"
+      TIMESTAMP_FORMAT: "%Y-%m-%d"
+      SUBJECT: "RAHB Active RCN members list for {{time_period}}"
+      CONTENT: "Enclosed active RAHB RCN members spreadsheet of {{time_period}} for your reference."
+      DAY_OF_MONTH: "15"
+      HOUR_OF_DAY: "12" # 12:00 UTC is 8:00 EDT
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run RCN Report
+      run: python main.py --now
