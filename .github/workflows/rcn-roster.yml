@@ -1,6 +1,7 @@
 name: RCN Roster
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 16 15 * *' # Runs at 16:00 UTC on the 15th of every month
 
