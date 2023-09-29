@@ -1,4 +1,4 @@
-# 📊 Redash to XLSX Reports 📈
+# 📊 Redash XLSX Reports 📈
 
 [![Continuous Integration](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/python-app.yml/badge.svg)](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/python-app.yml)
 [![Docker Image](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/docker-image.yml/badge.svg)](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/docker-image.yml)
