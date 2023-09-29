@@ -10,6 +10,7 @@ This project generates an XLSX report from CSV data obtained from Redash queries
 - [✅ Requirements](#-requirements)
 - [🛠️ Configuration](#configuration)
 - [🧑‍💻 Usage](#-usage)
+- [🐳 Running with Docker](#-running-with-docker)
 - [🌐 Community](#-community)
   - [Contributing 👥](#contributing-)
   - [Reporting Bugs 🐛](#reporting-bugs-)
