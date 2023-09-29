@@ -1,4 +1,4 @@
-# 📊 CSV to XLSX Report Generator 📈
+# 📊 Redash XLSX Reports 📈
 
 [![Continuous Integration](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/python-app.yml/badge.svg)](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/python-app.yml)
 [![Docker Image](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/docker-image.yml/badge.svg)](https://github.com/RAHB-REALTORS-Association/redash-report/actions/workflows/docker-image.yml)
@@ -10,6 +10,7 @@ This project generates an XLSX report from CSV data obtained from Redash queries
 - [✅ Requirements](#-requirements)
 - [🛠️ Configuration](#configuration)
 - [🧑‍💻 Usage](#-usage)
+- [🐳 Running with Docker](#-running-with-docker)
 - [🌐 Community](#-community)
   - [Contributing 👥](#contributing-)
   - [Reporting Bugs 🐛](#reporting-bugs-)
@@ -47,6 +48,26 @@ python main.py --now
 ```
 
 The script will run indefinitely in the absence of the `--now` argument, generating and emailing a report according to the schedule specified in `settings.py`.
+
+## 🐳 Running with Docker
+
+To get started, you first need to pull the Docker image from the GitHub Container Registry. You can do this by running the following command in your terminal:
+
+```bash
+docker pull ghcr.io/rahb-realtors-association/redash-report:latest
+```
+
+Set environment variables as needed and run with the following command:
+
+```bash
+docker run ghcr.io/rahb-realtors-association/redash-report:latest
+```
+
+Alternatively, download the `settings.example.py` and save it as `settings.py`. Modify as needed and run with the following command:
+
+```bash
+docker run -v /path/to/your/settings.py:/app/settings.py ghcr.io/rahb-realtors-association/redash-report:latest
+```
 
 ## 🌐 Community
 
