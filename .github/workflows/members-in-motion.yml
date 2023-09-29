@@ -1,0 +1,40 @@
+name: Members in Motion
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 3' # Runs at 12:00 UTC every Wednesday
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+
+    env:
+      REDASH_URL: ${{ secrets.REDASH_URL }} # https://redash.rahb.ca
+      API_KEY: ${{ secrets.REDASH_API_KEY }} # API key for Redash
+      SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }} # API key for SendGrid
+      FROM_EMAIL: ${{ secrets.MIM_FROM_EMAIL }} # Sender's email address
+      TO_EMAILS: ${{ secrets.MIM_TO_EMAILS }} # Recipients' email addresses
+      # Non-sensitive information can be set directly
+      QUERY_IDS: "139,140,141" # Membership Additions, Deletions, Transfers
+      TITLES: "Membership Additions,Membership Deletions,Membership Transfers"
+      LOGO_URL: "https://s1.cdn.rahb.ca/rahbca/wp-content/uploads/2018/10/RAHB-logo_hztrans_video.png"
+      SUBJECT: "Members in Motion Report"
+      CONTENT: "Please find attached the latest Members in Motion report."
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Report
+      run: python main.py --now

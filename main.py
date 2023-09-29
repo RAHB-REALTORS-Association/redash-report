@@ -1,20 +1,24 @@
-import schedule
-import time
-import io
-import pandas as pd
-from openpyxl import styles
-import os
 import argparse
-from datetime import datetime
+import io
+from datetime import datetime, timedelta
+import os
+import time
+
+import pandas as pd
 import requests
-from send_email import send_email
+import schedule
+
 import settings
+from create_pdf import create_pdf_report
+from create_xlsx import create_xlsx_report
+from send_email import send_email
 
-headers = {
-    "Authorization": f"Key {settings.api_key}"
-}
 
-def refresh_and_fetch_csv(query_id):    
+def refresh_and_fetch_csv(query_id):
+    headers = {
+        "Authorization": f"Key {settings.api_key}"
+    }
+
     # Construct the refresh URL and send a POST request to refresh the query
     refresh_url = f"{settings.redash_url}/api/queries/{query_id}/refresh"
     response = requests.post(refresh_url, headers=headers)
@@ -38,69 +42,66 @@ def refresh_and_fetch_csv(query_id):
     return None
 
 
-def job(ignore_day_check=False):
-    # Check if today is the day of the month to run the job
-    if datetime.today().day == settings.day_of_month or ignore_day_check:
-        time_period = datetime.now().strftime(settings.timestamp_format)
-        for query_id, title in zip(settings.query_ids, settings.titles):
-            data = refresh_and_fetch_csv(query_id)
-            if data is not None:
-                # Convert to XLSX
-                xlsx_file = f"{title} {time_period}.xlsx"
-                with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
-                    # Start writing CSV data from the third row
-                    data.to_excel(writer, index=False, startrow=2)  # 0-indexed, so startrow=2 means the third row
-                    
-                    # Get the active worksheet
-                    sheet = writer.sheets['Sheet1']
-                    
-                    # Set column widths
-                    for column in sheet.columns:
-                        max_length = max(len(str(cell.value)) for cell in column)
-                        sheet.column_dimensions[column[0].column_letter].width = max_length
-                    
-                    # Define a cell style for bold and larger font
-                    bold_large_font = styles.Font(bold=True, size=14)
-                    
-                    # Insert the title, time period, and total count in the specified cells
-                    title_cell = sheet['B1']
-                    title_cell.value = title
-                    title_cell.font = bold_large_font
-                    
-                    date_cell = sheet['D1']
-                    date_cell.value = time_period
-                    date_cell.font = bold_large_font
-                    
-                    total_cell = sheet['F1']
-                    total_cell.value = f"Total Count: {len(data)}"
-                    total_cell.font = bold_large_font
-                            
-                # Send email with XLSX attached
-                dynamic_subject = settings.subject.replace("{{time_period}}", time_period)
-                dynamic_content = settings.content.replace("{{time_period}}", time_period)
-                send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, xlsx_file)
-                
-                # Remove the XLSX file after sending the email
-                os.remove(xlsx_file)
+def run_report(mode='xlsx'):
+    dataframes = []
+    titles = []
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=7)  # Adjust the timedelta as needed
+    time_period = datetime.now().strftime(settings.timestamp_format)
+
+    for query_id, title in zip(settings.query_ids, settings.titles):
+        data = refresh_and_fetch_csv(query_id)
+        if data is not None:
+            dataframes.append(data)
+            titles.append(title)
+    
+    if dataframes:
+        output_path = f"Report_{time_period}.{'pdf' if mode == 'pdf' else 'xlsx'}"
+        dynamic_subject = settings.subject.replace("{{time_period}}", time_period)
+        dynamic_content = settings.content.replace("{{time_period}}", time_period)
+        
+        if mode == 'xlsx':
+            for df, title in zip(dataframes, titles):
+                report_file = create_xlsx_report(df, title, time_period)
+                send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_file)
+                try:
+                    # ... (send the email)
+                    os.remove(report_file)  # delete the file after sending the email
+                except Exception as e:
+                    print(f"Error in deleting the file: {e}")
+        elif mode == 'pdf':
+            report_file = create_pdf_report(dataframes, titles, output_path, settings.logo_url, start_date, end_date)
+            send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_file)
+            try:
+                # ... (send the email)
+                os.remove(report_file)  # delete the file after sending the email
+            except Exception as e:
+                print(f"Error in deleting the file: {e}")
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Run the job either according to schedule or immediately.')
-    parser.add_argument('--now', action='store_true', help='Run the job immediately')
+    # Initialize the argument parser
+    parser = argparse.ArgumentParser(description='Generate and send Redash reports.')
     
+    # Add command-line arguments
+    parser.add_argument('--mode', type=str, choices=['xlsx', 'pdf'], default='xlsx', help='Report mode: xlsx or pdf.')
+    parser.add_argument('--now', action='store_true', help='Run the report immediately.')
+    
+    # Parse the command-line arguments
     args = parser.parse_args()
     
+    # If --now argument is passed, run the report immediately
     if args.now:
-        job(ignore_day_check=True)
-    else:
-        # Schedule the job to run every day at the specified hour, 
-        # but the tasks inside the job will only execute if the day of the month matches the specified day in the settings.
-        schedule.every().day.at(f"{settings.hour_of_day}:00").do(job)
+        run_report(args.mode)
+        return
+    
+    # Schedule the report based on the schedule_string from settings
+    schedule.every().cron(settings.schedule_string).do(run_report, args.mode)
+    
+    # Keep running the scheduled task
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
-        # Keep the script running
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    main()  # Call the main function when the script is executed

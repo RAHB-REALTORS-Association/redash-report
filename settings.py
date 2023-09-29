@@ -17,6 +17,5 @@ to_emails = os.environ.get('TO_EMAILS', "recipient1@example.com,recipient2@examp
 subject = os.environ.get('SUBJECT', "Summary Report for {{time_period}}")
 content = os.environ.get('CONTENT', "Please find attached the latest summary report for {{time_period}}.")
 
-# Schedule settings
-day_of_month = int(os.environ.get('DAY_OF_MONTH', 15))  # Convert string to integer
-hour_of_day = int(os.environ.get('HOUR_OF_DAY', 16))  # Convert string to integer
+# Scheduler settings
+schedule_string = os.environ.get('SCHEDULE_STRING', "0 0 * * *")  # Daily at midnight
