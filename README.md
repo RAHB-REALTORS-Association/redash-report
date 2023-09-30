@@ -32,32 +32,31 @@ pip install -r requirements.txt
 ```
 
 ## 🛠️ Configuration
-You can configure the Redash base URL, API key, query IDs, report titles, logo URL, email settings, and the report generation schedule through environment variables or the `settings.py` file. Ensure that the API key has sufficient permissions to refresh the queries and access the results. 
+You can configure several aspects of the application through environment variables or the `settings.py` file. This includes the Redash base URL, API key, query IDs, report titles, logo URL, email settings, and the report generation schedule. Ensure that the API key has the necessary permissions to refresh the queries and access the results.
 
-Additionally, you can set the report mode (XSLX or PDF) through command-line arguments or the `settings.py` file. The schedule should be specified in the cron format in the `settings.py` file.
+Additionally, you can set the report mode (XLSX, XLSX-MULTI, PDF, PDF-MULTI) through command-line arguments or the `settings.py` file. The schedule should be specified in cron format in the `settings.py` file.
 
 ## 🧑‍💻 Usage
 Run the main script with Python:
 
 ```bash
-python main.py --mode [xlsx|pdf] --now
+python main.py --mode [xlsx|xlsx-multi|pdf|pdf-multi] --now
 ```
 
-- `--mode`: Sets the report mode to use (XSLX or PDF).
+- `--mode`: Sets the report mode to use (XLSX, XLSX-MULTI, PDF, PDF-MULTI).
 - `--now`: Run the report immediately, bypassing the schedule.
 
 ### Examples
-Run the script immediately, generating a PDF report:
+Run the script immediately, generating a PDF report with multiple attachments:
 
 ```bash
-python main.py --mode pdf --now
+python main.py --mode pdf-multi --now
 ```
 
-The script will run indefinitely in the absence of the `--now` argument, generating, and emailing a report according to the schedule specified in the `settings.py`.
+The script will run indefinitely in the absence of the `--now` argument, generating and emailing reports according to the schedule specified in the `settings.py`.
 
 ## 🐳 Running with Docker
-
-To get started, you first need to pull the Docker image from the GitHub Container Registry. You can do this by running the following command in your terminal:
+To run the application using Docker, first, pull the Docker image:
 
 ```bash
 docker pull ghcr.io/rahb-realtors-association/redash-report:latest
@@ -66,13 +65,13 @@ docker pull ghcr.io/rahb-realtors-association/redash-report:latest
 Set environment variables as needed and run with the following command:
 
 ```bash
-docker run ghcr.io/rahb-realtors-association/redash-report:latest --mode [xlsx|pdf] --now
+docker run ghcr.io/rahb-realtors-association/redash-report:latest --mode [xlsx|xlsx-multi|pdf|pdf-multi] --now
 ```
 
-Alternatively, you can use a `settings.py` file to configure your environment. Download the `settings.example.py` and save it as `settings.py`. Modify as needed and run with the following command:
+Alternatively, you can use a `settings.py` file to configure your environment. Download the `settings.example.py`, save it as `settings.py`, modify as needed, and run with the following command:
 
 ```bash
-docker run -v /path/to/your/settings.py:/app/settings.py ghcr.io/rahb-realtors-association/redash-report:latest --mode [xlsx|pdf] --now
+docker run -v /path/to/your/settings.py:/app/settings.py ghcr.io/rahb-realtors-association/redash-report:latest --mode [xlsx|xlsx-multi|pdf|pdf-multi] --now
 ```
 
 ## 🌐 Community
