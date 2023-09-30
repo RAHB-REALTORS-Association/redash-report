@@ -9,8 +9,8 @@ import requests
 import schedule
 
 import settings
-from create_pdf import create_pdf_report
-from create_xlsx import create_xlsx_report
+from create_pdf import create_pdf_report, create_pdf_report_multi
+from create_xlsx import create_xlsx_report, create_xlsx_report_multi
 from send_email import send_email
 
 
@@ -59,22 +59,40 @@ def run_report(mode='xlsx'):
         output_path = f"Report_{time_period}.{'pdf' if mode == 'pdf' else 'xlsx'}"
         dynamic_subject = settings.subject.replace("{{time_period}}", time_period)
         dynamic_content = settings.content.replace("{{time_period}}", time_period)
-        
+
         if mode == 'xlsx':
-            for df, title in zip(dataframes, titles):
-                report_file = create_xlsx_report(df, title, time_period)
-                send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_file)
-                try:
-                    # ... (send the email)
-                    os.remove(report_file)  # delete the file after sending the email
-                except Exception as e:
-                    print(f"Error in deleting the file: {e}")
-        elif mode == 'pdf':
-            report_file = create_pdf_report(dataframes, titles, output_path, settings.logo_url, start_date, end_date)
-            send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_file)
+            report_files = create_xlsx_report(dataframes, titles, time_period)
+            send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_files)
             try:
-                # ... (send the email)
-                os.remove(report_file)  # delete the file after sending the email
+                for file in report_files:
+                    os.remove(file)
+            except Exception as e:
+                print(f"Error in deleting the file: {e}")
+
+        elif mode == 'xlsx-multi':
+            report_files = create_xlsx_report_multi(dataframes, titles, time_period)
+            send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_files)
+            try:
+                for file in report_files:
+                    os.remove(file)
+            except Exception as e:
+                print(f"Error in deleting the file: {e}")
+
+        elif mode == 'pdf':
+            report_files = create_pdf_report(dataframes, titles, output_path, settings.logo_url, start_date, end_date)
+            send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_files)
+            try:
+                for file in report_files:
+                    os.remove(file)
+            except Exception as e:
+                print(f"Error in deleting the file: {e}")
+
+        elif mode == 'pdf-multi':
+            report_files = create_pdf_report_multi(dataframes, titles, settings.logo_url, start_date, end_date)
+            send_email(settings.sendgrid_api_key, settings.from_email, settings.to_emails, dynamic_subject, dynamic_content, report_files)
+            try:
+                for file in report_files:
+                    os.remove(file)
             except Exception as e:
                 print(f"Error in deleting the file: {e}")
 
@@ -84,7 +102,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generate and send Redash reports.')
     
     # Add command-line arguments
-    parser.add_argument('--mode', type=str, choices=['xlsx', 'pdf'], default='xlsx', help='Report mode: xlsx or pdf.')
+    parser.add_argument('--mode', type=str, choices=['xlsx', 'xlsx-multi', 'pdf', 'pdf-multi'], default='xlsx', help='Report mode: xlsx, xlsx-multi, pdf, or pdf-multi.')
     parser.add_argument('--now', action='store_true', help='Run the report immediately.')
     
     # Parse the command-line arguments
