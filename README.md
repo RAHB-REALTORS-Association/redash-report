@@ -8,8 +8,8 @@ This project generates .XLSX or .PDF reports from CSV data obtained from Redash 
 
 ## Table of Contents
 - [✅ Requirements](#-requirements)
-- [🛠️ Configuration](#-configuration)
-  - [Modes Explained](#modes-explained-)
+- [🛠️ Configuration](#%EF%B8%8F-configuration)
+  - [Modes Explained](#modes-explained-ℹ%EF%B8%8F)
 - [🧑‍💻 Usage](#-usage)
 - [🐳 Running with Docker](#-running-with-docker)
 - [🌐 Community](#-community)
