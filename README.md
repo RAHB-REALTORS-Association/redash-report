@@ -8,7 +8,8 @@ This project generates .XLSX or .PDF reports from CSV data obtained from Redash 
 
 ## Table of Contents
 - [✅ Requirements](#-requirements)
-- [🛠️ Configuration](#configuration)
+- [🛠️ Configuration](#-configuration)
+  - [Modes Explained](#modes-explained-)
 - [🧑‍💻 Usage](#-usage)
 - [🐳 Running with Docker](#-running-with-docker)
 - [🌐 Community](#-community)
@@ -36,6 +37,16 @@ You can configure several aspects of the application through environment variabl
 
 Additionally, you can set the report mode (XLSX, XLSX-MULTI, PDF, PDF-MULTI) through command-line arguments or the `settings.py` file. The schedule should be specified in cron format in the `settings.py` file.
 
+### Modes Explained ℹ️
+In this application, the `--mode` argument allows you to select how reports are generated and sent. Below are the available modes:
+
+- **xlsx**: This mode generates a single Excel (.xlsx) file containing sheets for each query result. The file is then sent as an email attachment.
+- **xlsx-multi**: This mode generates individual Excel (.xlsx) files for each query result and sends them all as separate attachments in a single email.
+- **pdf**: This mode generates a single PDF file containing pages for each query result. The file is then sent as an email attachment.
+- **pdf-multi**: This mode generates individual PDF files for each query result and sends them all as separate attachments in a single email.
+
+When using modes with multiple attachments (xlsx-multi, pdf-multi), each attachment is named according to the title of the respective query result and includes the time period of the report. In contrast, modes generating single files (xlsx, pdf) create a unified file, where the different sections or sheets are named after the corresponding query titles.
+
 ## 🧑‍💻 Usage
 Run the main script with Python:
 
@@ -46,7 +57,7 @@ python main.py --mode [xlsx|xlsx-multi|pdf|pdf-multi] --now
 - `--mode`: Sets the report mode to use (XLSX, XLSX-MULTI, PDF, PDF-MULTI).
 - `--now`: Run the report immediately, bypassing the schedule.
 
-### Examples
+#### Examples
 Run the script immediately, generating a PDF report with multiple attachments:
 
 ```bash
