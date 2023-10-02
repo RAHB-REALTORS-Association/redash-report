@@ -21,6 +21,7 @@ jobs:
       LOGO_URL: "https://s1.cdn.rahb.ca/rahbca/wp-content/uploads/2018/10/RAHB-logo_hztrans_video.png"
       SUBJECT: "Members in Motion Report"
       CONTENT: "Please find attached the latest Members in Motion report."
+      MODE: "pdf"
 
     steps:
     - name: Checkout code
