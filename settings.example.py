@@ -20,3 +20,4 @@ content = "Please find attached the latest summary report for {{time_period}}."
 
 # Scheduler settings
 schedule_string = "0 0 * * *"  # Daily at midnight
+mode = "xlsx"  # pdf, pdf-multi, xlsx, xlsx-multi

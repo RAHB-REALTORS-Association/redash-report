@@ -111,7 +111,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generate and send Redash reports.')
     
     # Add command-line arguments
-    parser.add_argument('--mode', type=str, choices=['xlsx', 'xlsx-multi', 'pdf', 'pdf-multi'], default='xlsx', help='Report mode: xlsx, xlsx-multi, pdf, or pdf-multi.')
+    parser.add_argument('--mode', type=str, choices=['xlsx', 'xlsx-multi', 'pdf', 'pdf-multi'], default=settings.mode, help='Report mode: xlsx, xlsx-multi, pdf, or pdf-multi.')
     parser.add_argument('--now', action='store_true', help='Run the report immediately.')
     
     # Parse the command-line arguments
