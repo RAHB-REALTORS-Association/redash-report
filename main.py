@@ -123,7 +123,7 @@ def main():
         return
     
     # Schedule the report based on the schedule_string from settings
-    schedule.every().cron(settings.schedule_string).do(run_report, args.mode)
+    schedule.every().cron(settings.schedule_string).do(run_report, args.mode) # pylint: disable=no-member
     
     while True:
         schedule.run_pending()
