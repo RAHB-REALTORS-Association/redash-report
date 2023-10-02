@@ -39,4 +39,4 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Report
-      run: python main.py --mode pdf --now
+      run: python main.py --now
