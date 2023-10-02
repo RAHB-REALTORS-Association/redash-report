@@ -19,3 +19,4 @@ content = os.environ.get('CONTENT', "Please find attached the latest summary rep
 
 # Scheduler settings
 schedule_string = os.environ.get('SCHEDULE_STRING', "0 0 * * *")  # Daily at midnight
+mode = os.environ.get('MODE', "xlsx")  # pdf, pdf-multi, xlsx, xlsx-multi

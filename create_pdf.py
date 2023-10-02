@@ -77,4 +77,17 @@ def create_pdf_report(dataframes, titles, output_path, logo_url, start_date, end
     pdf.build(elements)
 
     # Return the path of the created PDF
-    return output_path
+    return [output_path]
+
+
+def create_pdf_report_multi(dataframes, titles, logo_url, start_date, end_date):
+    pdf_files = []
+
+    for df, title in zip(dataframes, titles):
+        output_path = f"{title} {start_date.strftime(settings.timestamp_format)} to {end_date.strftime(settings.timestamp_format)}.pdf"
+
+        create_pdf_report([df], [title], output_path, logo_url, start_date, end_date)
+
+        pdf_files.append(output_path)
+
+    return pdf_files

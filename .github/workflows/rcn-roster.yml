@@ -22,8 +22,7 @@ jobs:
       TIMESTAMP_FORMAT: "%Y-%m-%d"
       SUBJECT: "RAHB Active RCN members list for {{time_period}}"
       CONTENT: "Enclosed active RAHB RCN members spreadsheet of {{time_period}} for your reference."
-      DAY_OF_MONTH: "15"
-      HOUR_OF_DAY: "12" # 12:00 UTC is 8:00 EDT
+      MODE: "xlsx"
 
     steps:
     - name: Checkout code
@@ -31,7 +30,8 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: '3.10'
+        cache: 'pip' # caching pip dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
