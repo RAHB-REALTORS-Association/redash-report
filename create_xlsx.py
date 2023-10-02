@@ -3,6 +3,15 @@ import pandas as pd
 
 
 def create_xlsx_report(data, title, time_period):
+    # Ensure title is a string
+    if isinstance(title, list) and len(title) == 1:
+        title = title[0]
+    elif not isinstance(title, str):
+        raise ValueError("Title should be a string")
+    # Convert data to DataFrame if it's a list of DataFrames
+    if isinstance(data, list) and all(isinstance(i, pd.DataFrame) for i in data):
+        data = pd.concat(data)
+
     xlsx_file = f"{title} {time_period}.xlsx"
     with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
         data.to_excel(writer, index=False, startrow=2)  # Start writing CSV data from the third row
@@ -37,6 +46,15 @@ def create_xlsx_report(data, title, time_period):
 def create_xlsx_report_multi(dataframes, titles, time_period):
     files = []
     for data, title in zip(dataframes, titles):
+        # Ensure data is a DataFrame
+        if isinstance(data, list):
+            raise ValueError("Each item in dataframes should be a DataFrame")
+
+        xlsx_file = f"{title} {time_period}.xlsx"
+        with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
+            data.to_excel(writer, index=False, startrow=2)
+            sheet = writer.sheets['Sheet1']
+
         xlsx_file = f"{title} {time_period}.xlsx"
         with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
             data.to_excel(writer, index=False, startrow=2)

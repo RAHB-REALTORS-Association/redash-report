@@ -1,5 +1,6 @@
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition, Personalization
+from sendgrid.helpers.mail import Mail, Attachment, Email, FileContent, FileName, FileType, Disposition, Personalization
+from python_http_client.exceptions import BadRequestsError
 import base64
 import mimetypes
 
@@ -14,7 +15,12 @@ def send_email(sendgrid_api_key, from_email, to_emails, subject, content, files)
     # Create a Personalization object and add all the recipients to it
     personalization = Personalization()
     for to_email in to_emails:
+        # Ensure to_email is an instance of Email
+        if isinstance(to_email, str):
+            to_email = Email(to_email)
         personalization.add_to(to_email)
+
+    # Add the Personalization object to the Mail object
     mail.add_personalization(personalization)
     
     # Handle multiple attachments
@@ -35,5 +41,10 @@ def send_email(sendgrid_api_key, from_email, to_emails, subject, content, files)
         mail.add_attachment(attachment)
     
     client = SendGridAPIClient(sendgrid_api_key)
-    response = client.send(mail)
+    try:
+        response = client.send(mail)
+    except BadRequestsError as e:
+        print(e.body)
+        raise
+
     return response
