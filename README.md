@@ -25,6 +25,7 @@ This project generates .XLSX or .PDF reports from CSV data obtained from Redash 
 - [Requests](https://docs.python-requests.org/en/latest/)
 - [Schedule](https://schedule.readthedocs.io/en/stable/)
 - [SendGrid](https://sendgrid.com/)
+- [Redash](https://redash.io/)
 
 You can install the required Python packages with pip:
 
