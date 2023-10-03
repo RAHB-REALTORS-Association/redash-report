@@ -13,7 +13,7 @@ def create_xlsx_report(data, title, time_period):
         data = pd.concat(data)
 
     xlsx_file = f"{title} {time_period}.xlsx"
-    with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
+    with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer: # pylint: disable=abstract-class-instantiated
         data.to_excel(writer, index=False, startrow=2)  # Start writing CSV data from the third row
         
         # Get the active worksheet
@@ -51,12 +51,12 @@ def create_xlsx_report_multi(dataframes, titles, time_period):
             raise ValueError("Each item in dataframes should be a DataFrame")
 
         xlsx_file = f"{title} {time_period}.xlsx"
-        with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
+        with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer: # pylint: disable=abstract-class-instantiated
             data.to_excel(writer, index=False, startrow=2)
             sheet = writer.sheets['Sheet1']
 
         xlsx_file = f"{title} {time_period}.xlsx"
-        with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer:
+        with pd.ExcelWriter(xlsx_file, engine='openpyxl') as writer: # pylint: disable=abstract-class-instantiated
             data.to_excel(writer, index=False, startrow=2)
             sheet = writer.sheets['Sheet1']
             # Set column widths
