@@ -1,4 +1,4 @@
-name: Members in Motion
+name: Teranet Roster
 
 on:
   workflow_dispatch:
