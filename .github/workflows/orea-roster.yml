@@ -1,4 +1,4 @@
-name: Teranet Roster
+name: OREA Roster
 
 on:
   workflow_dispatch:
@@ -13,16 +13,16 @@ jobs:
       REDASH_URL: ${{ secrets.REDASH_URL }} # https://redash.rahb.ca
       API_KEY: ${{ secrets.REDASH_API_KEY }} # API key for Redash
       SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }} # API key for SendGrid
-      FROM_EMAIL: ${{ secrets.MPAC_FROM_EMAIL }} # Sender's email address
-      TO_EMAILS: ${{ secrets.MPAC_TO_EMAILS }} # Recipients' email addresses
+      FROM_EMAIL: ${{ secrets.OREA_FROM_EMAIL }} # Sender's email address
+      TO_EMAILS: ${{ secrets.OREA_TO_EMAILS }} # Recipients' email addresses
       # Non-sensitive information can be set directly
-      QUERY_IDS: "124,126"
-      TITLES: "RAHB Member Counts for Teranet, RAHB Non-Chargeable Members for Teranet"
+      QUERY_IDS: "146"
+      TITLES: "RAHB Member Roster for OREA"
       LOGO_URL: "https://s1.cdn.rahb.ca/rahbca/wp-content/uploads/2018/10/RAHB-logo_hztrans_video.png"
       TIMESTAMP_FORMAT: "%B %Y"
-      SUBJECT: "Teranet (Geowarehouse) self-reporting"
-      CONTENT: "Enclosed RAHB active members with RECO Numbers and Non-Chargeable admin members spreadsheet of August 2023 for Teranet (GeoWarehouse)."
-      MODE: "xlsx-multi"
+      SUBJECT: "OREA self-reporting"
+      CONTENT: "Enclosed RAHB active members for OREA."
+      MODE: "xlsx"
 
     steps:
     - name: Checkout code
