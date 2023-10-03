@@ -22,7 +22,7 @@ jobs:
       TIMESTAMP_FORMAT: "%B %Y"
       SUBJECT: "Teranet (Geowarehouse) self-reporting of {{time_period}}."
       CONTENT: "Enclosed RAHB active members with RECO Numbers and Non-Chargeable admin members spreadsheet of August 2023 for Teranet (GeoWarehouse)."
-      MODE: "xlsx"
+      MODE: "xlsx-multi"
 
     steps:
     - name: Checkout code
