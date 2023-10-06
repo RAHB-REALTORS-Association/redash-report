@@ -64,8 +64,8 @@ def send_email(sendgrid_api_key, from_email, to_emails, subject, content, files)
         # Print success status
         print(f"Email sent successfully to {len(to_emails)} recipient(s).")
     except BadRequestsError as e:
-        # Print failure status and error message
-        print(f"Email send failed. Status code: {response.status_code}.")
+        # Print failure status
+        print(f"Email send failed.")
         print(e.body)
         raise
 
