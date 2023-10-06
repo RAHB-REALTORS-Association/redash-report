@@ -17,6 +17,7 @@ from_email = "sender@example.com"
 to_emails = ["recipient1@example.com", "recipient2@example.com"]
 subject = "Summary Report for {{time_period}}"
 content = "Please find attached the latest summary report for {{time_period}}."
+template_path = "template.html"
 
 # Scheduler settings
 schedule_string = "0 0 * * *"  # Daily at midnight
