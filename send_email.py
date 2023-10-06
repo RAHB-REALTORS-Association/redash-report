@@ -44,7 +44,11 @@ def send_email(sendgrid_api_key, from_email, to_emails, subject, content, files)
     client = SendGridAPIClient(sendgrid_api_key)
     try:
         response = client.send(mail)
+        # Print success status along with the status code
+        print(f"Email sent successfully to {len(to_emails)} recipient(s).")
     except BadRequestsError as e:
+        # Print failure status
+        print(f"Email send failed. Status code: {response.status_code}.")
         print(e.body)
         raise
 
