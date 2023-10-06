@@ -16,6 +16,7 @@ from_email = os.environ.get('FROM_EMAIL', "sender@example.com")
 to_emails = os.environ.get('TO_EMAILS', "recipient1@example.com,recipient2@example.com").split(',')  # Converts "recipient1@example.com,recipient2@example.com" to ['recipient1@example.com', 'recipient2@example.com']
 subject = os.environ.get('SUBJECT', "Summary Report for {{time_period}}")
 content = os.environ.get('CONTENT', "Please find attached the latest summary report for {{time_period}}.")
+template_path = os.environ.get('TEMPLATE_PATH', "template.html")
 
 # Scheduler settings
 schedule_string = os.environ.get('SCHEDULE_STRING', "0 0 * * *")  # Daily at midnight
