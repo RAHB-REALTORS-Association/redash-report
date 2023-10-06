@@ -12,16 +12,17 @@ def send_email(sendgrid_api_key, from_email, to_emails, subject, content, files)
         plain_text_content=content
     )
     
-    # Create a Personalization object and add all the recipients to it
-    personalization = Personalization()
+    # Create a separate Personalization object for each recipient
     for to_email in to_emails:
+        personalization = Personalization()
+
         # Ensure to_email is an instance of Email
         if isinstance(to_email, str):
             to_email = Email(to_email)
         personalization.add_to(to_email)
 
-    # Add the Personalization object to the Mail object
-    mail.add_personalization(personalization)
+        # Add the Personalization object to the Mail object
+        mail.add_personalization(personalization)
     
     # Handle multiple attachments
     for file in files:
