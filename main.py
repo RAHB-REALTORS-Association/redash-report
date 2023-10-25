@@ -27,8 +27,8 @@ def refresh_and_fetch_csv(query_id):
     if response.status_code == 200:
         print(f"Query {query_id} refreshed successfully.")
 
-        # Introduce a 5-second delay before fetching the CSV
-        time.sleep(5)
+        # Introduce a 15-second delay before fetching the CSV
+        time.sleep(15)
         
         # Construct the CSV URL and fetch the CSV data
         csv_url = f"{settings.redash_url}/api/queries/{query_id}/results.csv?api_key={settings.api_key}"
