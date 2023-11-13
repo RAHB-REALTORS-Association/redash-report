@@ -1,6 +1,6 @@
 pandas==2.1.2
 openpyxl==3.1.2
-reportlab==4.0.6
+reportlab==4.0.7
 schedule==1.2.1
 sendgrid==6.10.0
 requests==2.31.0
