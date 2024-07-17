@@ -23,7 +23,7 @@ def create_pdf_report(dataframes, titles, output_path, logo_url, start_date, end
     styles = getSampleStyleSheet()
 
     # Load the logo
-    logo = Image(logo_file, 100, 50)
+    logo = Image(logo_file, 500, 50)
 
     # Date range for the title
     date_range = f" ({start_date.strftime(settings.timestamp_format)} to {end_date.strftime(settings.timestamp_format)})"
