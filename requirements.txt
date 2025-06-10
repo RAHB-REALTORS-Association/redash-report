@@ -3,4 +3,4 @@ openpyxl==3.1.5
 reportlab==4.4.1
 schedule==1.2.2
 sendgrid==6.12.3
-requests==2.32.3
+requests==2.32.4
